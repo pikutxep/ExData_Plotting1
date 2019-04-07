@@ -1,0 +1,13 @@
+png("plot3.png", width = 480, height = 480)
+data <- read.csv("household_power_consumption.txt", header = TRUE, sep = ";", stringsAsFactors=FALSE)
+data$Datetime <- as.POSIXct(paste(data$Date, data$Time), format="%d/%m/%Y %H:%M:%S")
+data$Date <- as.Date(data$Date, "%d/%m/%Y")
+dataSubset <- subset(data, Date >="2007-02-01" & Date < "2007-02-03")
+plot(dataSubset$Datetime, dataSubset$Sub_metering_1, type="l",ylab="Energy sub metering", xlab="")
+dataSubset$Sub_metering_2<-as.numeric(as.character(sub("," , ".", dataSubset$Sub_metering_2)))
+lines(dataSubset$Datetime,dataSubset$Sub_metering_2, col = "red")
+dataSubset$Sub_metering_3<-as.numeric(as.character(sub("," , ".", dataSubset$Sub_metering_3)))
+lines(dataSubset$Datetime,dataSubset$Sub_metering_3, col = "blue")
+legend("topright",c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),col=c("black","red","blue"), lty=1)
+
+dev.off()
